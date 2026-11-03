@@ -116,6 +116,17 @@ def registrar_cita():
         hora_inicio = entrada_inicio.get().strip()
         hora_fin = entrada_fin.get().strip()
 
+        # Verificar que todos los campos tengan informacion
+        if not all((
+            codigo_paciente,
+            codigo_medico,
+            fecha,
+            hora_inicio,
+            hora_fin
+        )):
+            raise ValueError("Todos los campos son obligatorios")
+
+        # Buscar al paciente y al medico
         paciente = pacientes[codigo_paciente]
         medico = medicos[codigo_medico]
 
@@ -134,6 +145,7 @@ def registrar_cita():
 
         contador_citas += 1
         actualizar_tabla()
+
         resultado.config(
             text=f"Cita {cita.codigo} registrada correctamente",
             foreground="green"
@@ -150,8 +162,6 @@ def registrar_cita():
             text=str(error),
             foreground="red"
         )
-
-
 # Funcion para mostrar las citas registradas
 def actualizar_tabla():
     # Limpiar los datos anteriores de la tabla
@@ -212,6 +222,8 @@ def consultar_cita():
 
 
 # Funcion para modificar una cita seleccionada
+
+# Funcion para modificar una cita seleccionada
 def modificar_cita():
     seleccion = tabla.selection()
 
@@ -230,6 +242,13 @@ def modificar_cita():
         hora_inicio = entrada_inicio.get().strip()
         hora_fin = entrada_fin.get().strip()
 
+        # Verificar que los campos no esten vacios
+        if not all((fecha, hora_inicio, hora_fin)):
+            raise ValueError(
+                "Completa la fecha y los horarios"
+            )
+
+        # Modificar la cita seleccionada
         cita = gestor.modificar_cita(
             codigo,
             fecha,
@@ -237,6 +256,7 @@ def modificar_cita():
             hora_fin
         )
 
+        # Actualizar la tabla
         actualizar_tabla()
 
         resultado.config(
@@ -281,45 +301,48 @@ def cancelar_cita():
         )
 
 # Boton para registrar
+marco_botones = ttk.Frame(formulario)
+marco_botones.grid(
+    row=5, column=0, columnspan=2, pady=10
+)
+
+# Boton para registrar
 boton_registrar = ttk.Button(
-    formulario,
-    text="Registrar cita",
+    marco_botones,
+    text="Registrar",
     command=registrar_cita
 )
-boton_registrar.grid(
-    row=5, column=0, columnspan=2, pady=15
-)
-# Boton para consultar una cita seleccionada
+boton_registrar.pack(side="left", padx=5)
+
+# Boton para consultar
 boton_consultar = ttk.Button(
-    formulario,
-    text="Consultar cita",
+    marco_botones,
+    text="Consultar",
     command=consultar_cita
 )
-boton_consultar.grid(
-    row=7, column=0, columnspan=2, pady=5
-)
-# Boton para modificar una cita
+boton_consultar.pack(side="left", padx=5)
+
+# Boton para modificar
 boton_modificar = ttk.Button(
-    formulario,
-    text="Modificar cita",
+    marco_botones,
+    text="Modificar",
     command=modificar_cita
 )
-boton_modificar.grid(
-    row=8, column=0, columnspan=2, pady=5
-)
-# Boton para cancelar una cita
+boton_modificar.pack(side="left", padx=5)
+
+# Boton para cancelar
 boton_cancelar = ttk.Button(
-    formulario,
-    text="Cancelar cita",
+    marco_botones,
+    text="Cancelar",
     command=cancelar_cita
 )
-boton_cancelar.grid(
-    row=9, column=0, columnspan=2, pady=5
-)
-# Mensaje del resultado
-resultado = ttk.Label(formulario, text="")
-resultado.grid(row=6, column=0, columnspan=2, pady=5)
+boton_cancelar.pack(side="left", padx=5)
 
+# Mensaje para mostrar resultados
+resultado = ttk.Label(formulario, text="")
+resultado.grid(
+    row=6, column=0, columnspan=2, pady=5
+)
 
 # Tabla para visualizar las citas
 tabla = ttk.Treeview(

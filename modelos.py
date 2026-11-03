@@ -15,7 +15,8 @@ class Persona:
     #Setter: permitira modificar el nombre
     @nombre.setter
     def nombre(self,nuevo_nombre):
-        if not nuevo_nombre.string():
+        nuevo_nombre=nuevo_nombre.strip()
+        if not nuevo_nombre:
             raise ValueError("El nombre no puede estar vacio")
         self.__nombre=nuevo_nombre
 
@@ -26,7 +27,10 @@ class Persona:
 class Paciente(Persona):
     def __init__(self, nombre, codigo_paciente):
         super().__init__(nombre)
-        self.__codigo_paciente = codigo_paciente
+        codigo_paciente = codigo_paciente.strip()
+        if not codigo_paciente:
+            raise ValueError("El codigo del paciente no puede estar vacio")
+        self.__codigo_paciente=codigo_paciente
 
     #Getter: permitira consultar el codigo
     @property
@@ -40,6 +44,12 @@ class Paciente(Persona):
 class Medico(Persona):
     def __init__(self, nombre, codigo_medico, especialidad):
         super().__init__(nombre)
+        codigo_medico=codigo_medico.strip()
+        especialidad=especialidad.strip()
+        if not codigo_medico:
+            raise ValueError("El codigo del medico no puede estar vacio")
+        if not especialidad:
+            raise ValueError("La especialidad no puede estar vacia")
         self.__codigo_medico = codigo_medico
         self.__especialidad = especialidad
 
@@ -88,8 +98,16 @@ class CentroSalud:
 # Clase AreaAtencion
 class AreaAtencion:
     def __init__(self, codigo, nombre, piso, puerta):
-        self.__codigo = codigo
-        self.__nombre = nombre
+        codigo = codigo.strip()
+        nombre = nombre.strip()
+        if not codigo:
+            raise ValueError("El codigo del area no puede estar vacio")
+        if not nombre:
+            raise ValueError("El nombre del area no puede estar vacio")
+        if piso < 1 or puerta < 1:
+            raise ValueError("El piso y la puerta deben ser mayores que cero")
+        self.__codigo=codigo
+        self.__nombre=nombre
         self.__piso = piso
         self.__puerta = puerta
 
@@ -164,6 +182,8 @@ class CitaMedica:
 
     #Modificar y validar fechay horario
     def modificar(self, fecha, hora_inicio, hora_fin):
+        if self.__estado == "Cancelada":
+            raise ValueError("No se puede modificar una cita cancelada")
         fecha_validada= datetime.strptime(fecha, "%Y-%m-%d")
         inicio=datetime.strptime(hora_inicio, "%H:%M")
         fin=datetime.strptime(hora_fin, "%H:%M")
@@ -188,4 +208,3 @@ class CitaMedica:
             f"Horario: {self.hora_inicio} - {self.hora_fin}\n"
             f"Estado: {self.estado}"
         )
-

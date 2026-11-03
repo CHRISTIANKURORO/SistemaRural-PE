@@ -87,3 +87,4 @@ class CitaMedica:
             f"Horario: {self.hora_inicio} - {self.hora_fin}\n"
             f"Estado: {self.estado}"
         )
+

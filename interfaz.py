@@ -3,6 +3,29 @@
 # ==========================================
 import tkinter as tk
 from tkinter import ttk
+from modelos import Paciente, Medico, CentroSalud, AreaAtencion
+from gestor import GestorCitas
+
+# Datos ficticios para las pruebas
+pacientes = {
+    "P001": Paciente("Ana Torres", "P001"),
+    "P002": Paciente("Pedro Ruiz", "P002")
+}
+
+medicos = {
+    "M001": Medico("Luis Perez", "M001", "Medicina General")
+}
+
+centro = CentroSalud(
+    "Centro de Salud Rural Santa Rosa",
+    "Av. Principal s/n",
+    "Chugur"
+)
+
+area = AreaAtencion("A001", "Medicina General", 1, 1)
+
+gestor = GestorCitas()
+contador_citas = 1
 
 # Crear la ventana principal
 ventana = tk.Tk()
@@ -80,6 +103,67 @@ ttk.Label(formulario, text="Hora final (HH:MM):").grid(
 )
 entrada_fin = ttk.Entry(formulario, width=25)
 entrada_fin.grid(row=4, column=1, padx=10, pady=8)
+
+
+# Funcion para registrar una cita desde la interfaz
+def registrar_cita():
+    global contador_citas
+
+    try:
+        codigo_paciente = entrada_paciente.get().strip()
+        codigo_medico = entrada_medico.get().strip()
+        fecha = entrada_fecha.get().strip()
+        hora_inicio = entrada_inicio.get().strip()
+        hora_fin = entrada_fin.get().strip()
+
+        paciente = pacientes[codigo_paciente]
+        medico = medicos[codigo_medico]
+
+        codigo_cita = f"C{contador_citas:03d}"
+
+        cita = gestor.registrar_cita(
+            codigo_cita,
+            paciente,
+            medico,
+            centro,
+            area,
+            fecha,
+            hora_inicio,
+            hora_fin
+        )
+
+        contador_citas += 1
+
+        resultado.config(
+            text=f"Cita {cita.codigo} registrada correctamente",
+            foreground="green"
+        )
+
+    except KeyError:
+        resultado.config(
+            text="Codigo de paciente o medico no valido",
+            foreground="red"
+        )
+
+    except ValueError as error:
+        resultado.config(
+            text=str(error),
+            foreground="red"
+        )
+
+# Boton para registrar
+boton_registrar = ttk.Button(
+    formulario,
+    text="Registrar cita",
+    command=registrar_cita
+)
+boton_registrar.grid(
+    row=5, column=0, columnspan=2, pady=15
+)
+
+# Mensaje del resultado
+resultado = ttk.Label(formulario, text="")
+resultado.grid(row=6, column=0, columnspan=2, pady=5)
 
 # Boton inicial
 boton_salir = ttk.Button(

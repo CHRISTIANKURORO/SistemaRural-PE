@@ -1,0 +1,93 @@
+# ==========================================
+# INTERFAZ GRAFICA - SISTEMA RURAL-PE
+# ==========================================
+import tkinter as tk
+from tkinter import ttk
+
+# Crear la ventana principal
+ventana = tk.Tk()
+
+ventana.title("SistemaRural-PE - Gestion de Citas")
+ventana.geometry("800x550")
+ventana.resizable(False, False)
+
+# Titulo principal
+titulo = tk.Label(
+    ventana,
+    text="SISTEMA RURAL-PE",
+    font=("Arial", 20, "bold")
+)
+titulo.pack(pady=15)
+
+subtitulo = tk.Label(
+    ventana,
+    text="Centro de Salud Rural Santa Rosa - Chugur, Cajamarca",
+    font=("Arial", 11)
+)
+subtitulo.pack()
+
+# Crear un marco para organizar el contenido
+marco = ttk.Frame(ventana, padding=20)
+marco.pack(fill="both", expand=True)
+
+# Mensaje de bienvenida
+bienvenida = ttk.Label(
+    marco,
+    text="Sistema de Gestion de Citas Medicas",
+    font=("Arial", 15, "bold")
+)
+bienvenida.pack(pady=20)
+
+# Formulario para registrar una cita
+formulario = ttk.LabelFrame(
+    marco,
+    text="Registro de citas",
+    padding=15
+)
+formulario.pack(pady=10)
+
+# Campo para el codigo del paciente
+ttk.Label(formulario, text="Codigo del paciente:").grid(
+    row=0, column=0, padx=10, pady=8, sticky="w"
+)
+entrada_paciente = ttk.Entry(formulario, width=25)
+entrada_paciente.grid(row=0, column=1, padx=10, pady=8)
+
+# Campo para el codigo del medico
+ttk.Label(formulario, text="Codigo del medico:").grid(
+    row=1, column=0, padx=10, pady=8, sticky="w"
+)
+entrada_medico = ttk.Entry(formulario, width=25)
+entrada_medico.grid(row=1, column=1, padx=10, pady=8)
+
+# Campo para la fecha
+ttk.Label(formulario, text="Fecha (AAAA-MM-DD):").grid(
+    row=2, column=0, padx=10, pady=8, sticky="w"
+)
+entrada_fecha = ttk.Entry(formulario, width=25)
+entrada_fecha.grid(row=2, column=1, padx=10, pady=8)
+
+# Campo para la hora de inicio
+ttk.Label(formulario, text="Hora de inicio (HH:MM):").grid(
+    row=3, column=0, padx=10, pady=8, sticky="w"
+)
+entrada_inicio = ttk.Entry(formulario, width=25)
+entrada_inicio.grid(row=3, column=1, padx=10, pady=8)
+
+# Campo para la hora final
+ttk.Label(formulario, text="Hora final (HH:MM):").grid(
+    row=4, column=0, padx=10, pady=8, sticky="w"
+)
+entrada_fin = ttk.Entry(formulario, width=25)
+entrada_fin.grid(row=4, column=1, padx=10, pady=8)
+
+# Boton inicial
+boton_salir = ttk.Button(
+    marco,
+    text="Salir",
+    command=ventana.destroy
+)
+boton_salir.pack(pady=15)
+
+# Mantener la ventana abierta
+ventana.mainloop()

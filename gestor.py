@@ -29,6 +29,19 @@ class GestorCitas:
     def consultar_citas(self):
         return self.__agenda.listar_citas()
 
+    
+    # Consultar solamente las citas programadas
+    def filtrar_citas_programadas(self):
+        return self.__agenda.filtrar_citas_programadas()
+
+    # Obtener los codigos de las citas
+    def obtener_codigos_citas(self):
+        return self.__agenda.obtener_codigos_citas()
+
+    # Contar las citas programadas
+    def contar_citas_programadas(self):
+        return self.__agenda.contar_citas_programadas()
+
     # Buscar una cita por su codigo
     def buscar_cita(self, codigo):
         cita = self.__agenda.buscar_cita(codigo)

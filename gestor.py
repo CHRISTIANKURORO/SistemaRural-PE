@@ -63,7 +63,7 @@ class GestorCitas:
             cita.centro, cita.area, fecha, hora_inicio, hora_fin
         )
 
-        if not self.__agenda.verificar_disponibilidad(cita_temporal):
+        if not self.__agenda.verificar_disponibilidad(cita_temporal, codigo_excluir=codigo):            
             raise ValueError("El medico ya tiene una cita en ese horario")
 
         cita.modificar(fecha, hora_inicio, hora_fin)

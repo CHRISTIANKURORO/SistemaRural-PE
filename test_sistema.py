@@ -9,7 +9,7 @@ from modelos import (
     CitaMedica
 )
 from agenda import AgendaMedica
-
+from gestor import GestorCitas
 
 class TestSistemaRural(unittest.TestCase):
 
@@ -84,7 +84,43 @@ class TestSistemaRural(unittest.TestCase):
         )
 
         self.assertTrue(self.agenda.agregar_cita(cita2))
+    # Prueba 4: modificar una cita a un horario disponible
+    def test_modificar_cita_horario_disponible(self):
+        gestor = GestorCitas()
 
+        gestor.registrar_cita(
+            "C001", self.paciente, self.medico,
+            self.centro, self.area,
+            "2026-11-20", "09:00", "09:30"
+        )
+
+        cita = gestor.modificar_cita(
+            "C001", "2026-11-20", "10:00", "10:30"
+        )
+
+        self.assertEqual(cita.hora_inicio, "10:00")
+        self.assertEqual(cita.hora_fin, "10:30")
+
+    # Prueba 5: impedir modificar una cita a un horario ocupado
+    def test_impedir_modificacion_con_cruce(self):
+        gestor = GestorCitas()
+
+        gestor.registrar_cita(
+            "C001", self.paciente, self.medico,
+            self.centro, self.area,
+            "2026-11-20", "09:00", "09:30"
+        )
+
+        gestor.registrar_cita(
+            "C002", self.paciente2, self.medico,
+            self.centro, self.area,
+            "2026-11-20", "10:00", "10:30"
+        )
+
+        with self.assertRaises(ValueError):
+            gestor.modificar_cita(
+                "C002", "2026-11-20", "09:15", "09:45"
+            )
 
 if __name__ == "__main__":
     unittest.main()

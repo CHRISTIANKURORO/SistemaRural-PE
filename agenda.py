@@ -51,9 +51,15 @@ class AgendaMedica:
             0
         )
 
-    # Verificar si el médico está disponible
-    def verificar_disponibilidad(self, nueva_cita):
+
+# Verificar si el médico está disponible
+    def verificar_disponibilidad(self, nueva_cita, codigo_excluir=None):
         for cita in self.__lista_citas:
+
+        # Ignorar la cita que estamos modificando
+            if cita.codigo == codigo_excluir:
+                continue
+
             if (
                 cita.medico.codigo_medico == nueva_cita.medico.codigo_medico
                 and cita.fecha == nueva_cita.fecha
@@ -64,4 +70,5 @@ class AgendaMedica:
                 return False
 
         return True
+
     
